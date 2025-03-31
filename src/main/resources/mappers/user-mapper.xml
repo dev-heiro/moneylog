@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.codenova.moneylog.repository.UserRepository">
+    <insert id="save">
+        insert into
+            users(email, password, nickname, picture, provider, provider_id, verified, created_at)
+        values
+            (#{email}, #{password}, #{nickname}, #{picture}, #{provider}, #{providerId}, #{verified}, now() )
+    </insert>
+
+    <select id="findByEmail" resultType="user">
+        select * from users where email=#{email}
+    </select>
+    <select id="findByProviderAndProviderId" resultType="user">
+        select * from users where provider=#{provider} and provider_id=#{providerId}
+    </select>
+
+</mapper>
