@@ -11,7 +11,10 @@ import org.codenova.moneylog.entity.User;
 import org.codenova.moneylog.repository.UserRepository;
 import org.codenova.moneylog.request.LoginRequest;
 import org.codenova.moneylog.service.KakaoApiService;
+import org.codenova.moneylog.service.NaverApiService;
 import org.codenova.moneylog.vo.KakaoTokenResponse;
+import org.codenova.moneylog.vo.NaverProfileResponse;
+import org.codenova.moneylog.vo.NaverTokenResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,8 +24,12 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("/auth")
 public class AuthController {
+    private NaverApiService naverApiService;
     private KakaoApiService kakaoApiService;
+
     private UserRepository userRepository;
+
+
 
     @GetMapping("/login")
     public String loginHandle(Model model) {
@@ -30,6 +37,11 @@ public class AuthController {
 
         model.addAttribute("kakaoClientId", "847b759335c33e6b4f353f471db9a868");
         model.addAttribute("kakaoRedirectUri", "http://192.168.10.62:8080/auth/kakao/callback");
+
+
+        model.addAttribute("naverClientId", "aYEz34PADGSVOtamYGHb");
+        model.addAttribute("naverRedirectUri", "http://192.168.10.62:8080/auth/naver/callback");
+
 
         return "auth/login";
     }
@@ -68,12 +80,35 @@ public class AuthController {
         return "redirect:/index";
     }
 
+    @GetMapping("/naver/callback")
+    public String naverCallbackHandle(@RequestParam("code") String code,
+                                      @RequestParam("state") String state) throws JsonProcessingException {
+        // log.info("code = {}, state = {}", code, state);
+
+        NaverTokenResponse tokenResponse =
+                                    naverApiService.exchangeToken(code, state);
+
+        // log.info("accessToken = {}", tokenResponse.getAccessToken());
+
+
+        NaverProfileResponse profileResponse
+                = naverApiService.exchangeProfile(tokenResponse.getAccessToken());
+        log.info("profileResponse id = {}", profileResponse.getId());
+        log.info("profileResponse nickname = {}", profileResponse.getNickname());
+        log.info("profileResponse profileImage = {}", profileResponse.getProfileImage() );
+
+
+        return "redirect:/index";
+    }
+
+
+
     @GetMapping("/kakao/callback")
     public String kakaoCallbackHandle(@RequestParam("code") String code,
                                       HttpSession session
                                       ) throws JsonProcessingException {
         // log.info("code = {}", code);
-        KakaoTokenResponse response =kakaoApiService.exchangeToken(code);
+        KakaoTokenResponse response = kakaoApiService.exchangeToken(code);
         log.info("response.idToken = {}", response.getIdToken());
 
         DecodedJWT decodedJWT = JWT.decode(response.getIdToken());

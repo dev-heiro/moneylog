@@ -3,31 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <title>머니로그</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+    </style>
 </head>
-<body>
-<h2>로그인</h2>
-<form th:action="@{/auth/login}" method="post">
-    <p>
-        <input type="text" name="email"/>
-    </p>
-    <p>
-        <input type="password" name="password"/>
-    </p>
-    <p>
-        <button type="submit">로그인</button>
-    </p>
-</form>
+<body style="margin: 0">
+<div style="display: flex; justify-content: center; align-items: center; height: 100vh">
+    <div style="padding: 30px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); border-radius: 4px">
+        <form th:action="@{/auth/login}" method="post" style="margin-bottom: 30px" autocomplete="off">
+            <div style="margin-bottom: 10px">
+                <div style="display: flex; justify-content: space-between; font-size: small; margin-bottom: 4px;">
+                    <label>이메일주소</label>
+                    <a th:href="@{/auth/signup}">회원가입</a>
+                </div>
+                <div>
+                    <input type="text" name="email"
+                           style="padding: 8px; width: 100%; border:1px solid rgba(0,0,0,0.3) ; border-radius: 4px;"
+                           placeholder="이메일주소"/>
+                </div>
+            </div>
+            <div style="margin-bottom: 10px">
+                <div style="display: flex; justify-content: space-between; font-size: small; margin-bottom: 4px;">
+                    <label>비밀번호</label>
+                    <a th:href="@{/auth/find}">비밀번호찾기</a>
+                </div>
+                <div>
+                    <input type="text" name="password"
+                           style="padding: 8px; width: 100%; border:1px solid rgba(0,0,0,0.3) ; border-radius: 4px; "
+                           placeholder="비밀번호"/>
+                </div>
+            </div>
+            <p>
+                <button type="submit"
+                        style="width: 100%; padding: 10px; background-color: slategray;
+                        color: white;
+                         border-radius: 4px; border-color: transparent; cursor:pointer">
+                    로그인
+                </button>
+            </p>
+        </form>
 
-<div>
-    <a th:href="@{https://kauth.kakao.com/oauth/authorize
-        (client_id=${kakaoClientId}, redirect_uri=${kakaoRedirectUri}, response_type='code' )}">
-        <img th:src="@{/icons/kakao_login.png}" />
-    </a>
-</div>
-<div>
-    <a >
-        <img th:src="@{/icons/naver_login.png}" />
-    </a>
+        <div>
+            <a th:href="@{https://kauth.kakao.com/oauth/authorize
+            (client_id=${kakaoClientId}, redirect_uri=${kakaoRedirectUri}, response_type='code' )}">
+                <img th:src="@{/icons/kakao_login.png}"/>
+            </a>
+        </div>
+        <div>
+            <a th:href="@{https://nid.naver.com/oauth2.0/authorize(response_type='code', client_id=${naverClientId},
+                                    redirect_uri=${naverRedirectUri}, state='codenova')}">
+                <img th:src="@{/icons/naver_login.png}"/>
+            </a>
+        </div>
+    </div>
 </div>
 </body>
 </html>
