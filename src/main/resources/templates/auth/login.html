@@ -6,12 +6,12 @@
 </head>
 <body>
 <h2>로그인</h2>
-<form>
+<form th:action="@{/auth/login}" method="post">
     <p>
-        <input type="text"/>
+        <input type="text" name="email"/>
     </p>
     <p>
-        <input type="password"/>
+        <input type="password" name="password"/>
     </p>
     <p>
         <button type="submit">로그인</button>
@@ -21,7 +21,12 @@
 <div>
     <a th:href="@{https://kauth.kakao.com/oauth/authorize
         (client_id=${kakaoClientId}, redirect_uri=${kakaoRedirectUri}, response_type='code' )}">
-        <img th:src="@{/icons/kakao_login.png}"/>
+        <img th:src="@{/icons/kakao_login.png}" />
+    </a>
+</div>
+<div>
+    <a >
+        <img th:src="@{/icons/naver_login.png}" />
     </a>
 </div>
 </body>
