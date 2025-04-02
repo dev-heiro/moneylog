@@ -82,7 +82,8 @@ public class AuthController {
 
     @GetMapping("/naver/callback")
     public String naverCallbackHandle(@RequestParam("code") String code,
-                                      @RequestParam("state") String state) throws JsonProcessingException {
+                                      @RequestParam("state") String state,
+                                      HttpSession session) throws JsonProcessingException {
         // log.info("code = {}, state = {}", code, state);
 
         NaverTokenResponse tokenResponse =
@@ -93,9 +94,26 @@ public class AuthController {
 
         NaverProfileResponse profileResponse
                 = naverApiService.exchangeProfile(tokenResponse.getAccessToken());
-        log.info("profileResponse id = {}", profileResponse.getId());
+        // log.info("profileResponse id = {}", profileResponse.getId());
         log.info("profileResponse nickname = {}", profileResponse.getNickname());
         log.info("profileResponse profileImage = {}", profileResponse.getProfileImage() );
+        // =========================================================================================
+
+        User found = userRepository.findByProviderAndProviderId("NAVER", profileResponse.getId() );
+        if(found == null) {
+            User user = User.builder()
+                    .nickname(profileResponse.getNickname())
+                    .provider("NAVER")
+                    .providerId(profileResponse.getId())
+                    .verified("T")
+                    .picture(profileResponse.getProfileImage()).build();
+
+            userRepository.save(user);
+            session.setAttribute("user", user);
+        } else {
+            session.setAttribute("user", found);
+        }
+
 
 
         return "redirect:/index";
