@@ -2,22 +2,93 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원가입 | 머니로그</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+    </style>
 </head>
-<body>
-<form th:action="@{/auth/signup}" method="post">
-    <p>
-        <input type="text" name="email"/>
-    </p>
-    <p>
-        <input type="password" name="password"/>
-    </p>
-    <p>
-        <input type="text" name="nickname"/>
-    </p>
-    <p>
-        <button type="submit">가입</button>
-    </p>
-</form>
+<body style="margin: 0">
+<div style="padding : 30px 0px; margin-top:20px; text-align: center">
+    <a th:href="@{/index}">
+        <img th:src="@{/favicon.ico}" style="width:64px"/>
+    </a>
+</div>
+
+<div style="display: flex; align-items: center; flex-direction: column; ">
+    <h2 style="font-weight: 200">당신만의 가계부를 만들어보세요.</h2>
+    <div style="padding: 30px; border : 0.0062em solid rgba(0, 0, 0, 0.1); border-radius: 4px; background-color: #f6f8fa">
+        <form th:action="@{/auth/signup}" method="post" style="margin-bottom: 30px" autocomplete="off">
+            <div style="margin-bottom: 10px">
+                <div style="display: flex; justify-content: space-between; font-size: small; margin-bottom: 4px;">
+                    <label>이메일주소</label>
+                </div>
+                <div>
+                    <input type="text" name="email"
+                           style="padding: 8px; width: 100%; border:1px solid rgba(0,0,0,0.3) ; border-radius: 4px;"
+                           placeholder="이메일주소"/>
+                </div>
+            </div>
+            <div style="margin-bottom: 10px">
+                <div style="display: flex; justify-content: space-between; font-size: small; margin-bottom: 4px;">
+                    <label>비밀번호</label>
+                </div>
+                <div>
+                    <input type="password" name="password"
+                           style="padding: 8px; width: 100%; border:1px solid rgba(0,0,0,0.3) ; border-radius: 4px; "
+                           placeholder="비밀번호"/>
+                </div>
+            </div>
+            <div style="margin-bottom: 10px">
+                <div style="display: flex; justify-content: space-between; font-size: small; margin-bottom: 4px;">
+                    <label>활동명</label>
+                </div>
+                <div>
+                    <input type="text" name="nickname"
+                           style="padding: 8px; width: 100%; border:1px solid rgba(0,0,0,0.3) ; border-radius: 4px; "
+                           placeholder="활동명"/>
+                </div>
+            </div>
+            <p>
+                <button type="submit"
+                        style="width: 100%; padding: 10px; background-color: slategray;
+                        color: white;
+                         border-radius: 4px; border-color: transparent; cursor:pointer">
+                    가입하기
+                </button>
+            </p>
+        </form>
+
+        <div>
+            <a th:href="@{https://kauth.kakao.com/oauth/authorize
+            (client_id=${kakaoClientId}, redirect_uri=${kakaoRedirectUri}, response_type='code' )}">
+                <img th:src="@{/icons/kakao_login.png}"/>
+            </a>
+        </div>
+        <div>
+            <a th:href="@{https://nid.naver.com/oauth2.0/authorize(response_type='code', client_id=${naverClientId},
+                                    redirect_uri=${naverRedirectUri}, state='codenova')}">
+                <img th:src="@{/icons/naver_login.png}"/>
+            </a>
+        </div>
+        <hr cstyle="color: rgba(0, 0, 0, 0.1)"/>
+        <a th:href="@{/auth/login}" style="font-size: small">이미 계정이 있으신가요?</a>
+    </div>
+</div>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
+

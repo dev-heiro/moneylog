@@ -17,4 +17,12 @@
         select * from users where provider=#{provider} and provider_id=#{providerId}
     </select>
 
+    <update id="updatePasswordByEmail">
+        update users set password=#{password} where email=#{email}
+    </update>
+
+    <update id="updateVerifiedByEmail">
+        update users set verified='T' where email=#{email }
+    </update>
+
 </mapper>
