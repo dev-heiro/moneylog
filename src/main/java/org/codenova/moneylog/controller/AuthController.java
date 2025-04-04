@@ -63,6 +63,7 @@ public class AuthController {
                 userRepository.findByEmail(loginRequest.getEmail());
         if (user != null && user.getPassword().equals(loginRequest.getPassword())) {
             session.setAttribute("user", user);
+            session.setAttribute("userId", user.getId());
             return "redirect:/index";
         } else {
             return "redirect:/auth/login";

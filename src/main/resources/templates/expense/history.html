@@ -47,68 +47,63 @@
     </form>
 -->
 
-    <!-- 📋 지출 내역 테이블 -->
+
     <table style="border-collapse: collapse; width: 100%; margin-bottom: 30px;">
         <thead>
-        <tr style="background-color: #f2f2f2;">
-            <th style="padding: 8px; border: 1px solid #ccc; width:5%">
-                <input type="checkbox"/>
-            </th>
-            <th style="padding: 8px; border: 1px solid #ccc; width:15%">날짜</th>
-            <th style="padding: 8px; border: 1px solid #ccc; width:45%">내용</th>
-            <th style="padding: 8px; border: 1px solid #ccc; width:15%">금액</th>
-            <th style="padding: 8px; border: 1px solid #ccc; width:20%">카테고리</th>
+            <tr style="background-color: #f2f2f2;">
+                <th style="padding: 8px; border: 1px solid #ccc; width:5%">
+                    <input type="checkbox"/>
+                </th>
+                <th style="padding: 8px; border: 1px solid #ccc; width:15%">날짜</th>
+                <th style="padding: 8px; border: 1px solid #ccc; width:45%">내용</th>
+                <th style="padding: 8px; border: 1px solid #ccc; width:15%">금액</th>
+                <th style="padding: 8px; border: 1px solid #ccc; width:20%">카테고리</th>
 
-        </tr>
+            </tr>
         </thead>
         <tbody>
-        <tr>
-            <td style="padding: 8px; border: 1px solid #ccc;text-align: center">
-                <input type="checkbox"/></td>
-            <td style="padding: 8px; border: 1px solid #ccc;">2025-04-01</td>
-            <td style="padding: 8px; border: 1px solid #ccc;">점심 식사</td>
-            <td style="padding: 8px; border: 1px solid #ccc;">9,000</td>
-            <td style="padding: 8px; border: 1px solid #ccc;">식비</td>
-        </tr>
-        <tr>
-            <td style="padding: 8px; border: 1px solid #ccc;text-align: center">
-                <input type="checkbox"/></td>
-            <td style="padding: 8px; border: 1px solid #ccc;">2025-04-02</td>
-            <td style="padding: 8px; border: 1px solid #ccc;">지하철 탑승</td>
-            <td style="padding: 8px; border: 1px solid #ccc;">1,450</td>
-            <td style="padding: 8px; border: 1px solid #ccc;">교통</td>
-
-        </tr>
-        <tr>
-            <td style="padding: 8px; border: 1px solid #ccc;text-align: center">
-                <input type="checkbox"/></td>
-            <td style="padding: 8px; border: 1px solid #ccc;">2025-04-03</td>
-            <td style="padding: 8px; border: 1px solid #ccc;">티셔츠 구매</td>
-            <td style="padding: 8px; border: 1px solid #ccc;">25,000</td>
-            <td style="padding: 8px; border: 1px solid #ccc;">쇼핑</td>
-        </tr>
+            <tr th:each="one : ${expenses}">
+                <td style="padding: 8px; border: 1px solid #ccc;text-align: center">
+                    <input type="checkbox"/></td>
+                <td style="padding: 8px; border: 1px solid #ccc;">
+                    <span th:text="${one.expenseDate}"></span>
+                </td>
+                <td style="padding: 8px; border: 1px solid #ccc;">
+                    <span th:text="${one.description}"></span>
+                </td>
+                <td style="padding: 8px; border: 1px solid #ccc;">
+                    <span th:text="${#numbers.formatInteger(one.amount, 1, 'COMMA') }"></span>
+                </td>
+                <td style="padding: 8px; border: 1px solid #ccc;">
+                    <span th:text="${one.categoryName}"></span>
+                </td>
+            </tr>
         </tbody>
     </table>
 
+
     <div style="margin-top: 30px;">
-        <form>
+        <form th:action="@{/expense/history}" method="post">
             <table style="border-collapse: collapse; width: 100%; margin-bottom: 10px;">
                 <tr>
                     <td style="padding: 8px; border: 1px solid #ccc;text-align: center; width: 5%">
                         <input type="checkbox" disabled/></td>
                     <td style="padding: 8px; border: 1px solid #ccc; width: 15%; ">
-                        <input type="date" style="width: 100%;"/>
+                        <input type="date" th:max="${now}"
+                               style="width: 100%;" name="expenseDate"/>
                     </td>
                     <td style="padding: 8px; border: 1px solid #ccc;  width: 45%;">
-                        <input type="text" style="width: 100%; "/>
+                        <input type="text" style="width: 100%; " name="description"/>
                     </td>
                     <td style="padding: 8px; border: 1px solid #ccc;  width: 15%;">
-                        <input type="number" style="width: 100%;"/>
+                        <input type="number" style="width: 100%;" name="amount"/>
                     </td>
                     <td style="padding: 8px; border: 1px solid #ccc;  width: 20%;">
-                        <select style="width: 100%">
-                            <option>미분류</option>
-                            <option>식비</option>
+                        <select style="width: 100%" name="categoryId">
+                            <option disabled selected>카테고리</option>
+                            <option th:each="one : ${categorys}"
+                                    th:value="${one.id}"
+                                    th:text="${one.name}"></option>
                         </select>
                     </td>
                 </tr>

@@ -3,6 +3,7 @@ package org.codenova.moneylog;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -37,6 +38,13 @@ class MoneylogApplicationTests {
         String uuid = UUID.randomUUID().toString();
         System.out.println(uuid);
         System.out.println(uuid.replaceAll("-", ""));
+
+    }
+
+    @Test
+    void localDateTest() {
+        LocalDate now = LocalDate.now();
+        System.out.println(now);
 
     }
 
