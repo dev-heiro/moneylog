@@ -15,7 +15,7 @@
         <div style="font-size: 12px; color: #888;">
             <span style="display: inline-block;font-size: 11px;color: #888;
                 background-color: #ff8;padding: 2px 6px;border-radius: 6px;"
-                th:text="${user.provider} + ' / 인증'"  th:if="${user.verified =='T'}"
+                  th:text="${user.provider} + ' / 인증'" th:if="${user.verified =='T'}"
             ></span>
             <span style="display: inline-block;font-size: 11px;color: #888;
                 background-color: #f88;padding: 2px 6px;border-radius: 6px;"
@@ -33,7 +33,7 @@
         <h3 style="margin-top: 0; margin-bottom: 20px;">
             이번 주 요약
             <small th:text="${startDate} + ' ~ ' +${endDate}"
-                style="font-weight: 100; color: #555;"
+                   style="font-weight: 100; color: #555;"
             ></small>
         </h3>
 
@@ -47,15 +47,26 @@
         <div style="margin-bottom: 25px;">
             <div style="font-size: 14px; color: #555; margin-bottom: 4px;">Top 3 지출</div>
             <ul style="padding-left: 20px; margin: 6px 0; line-height: 1.6;">
-                <li>지출 항목 1 (₩0)</li>
-                <li>지출 항목 2 (₩0)</li>
-                <li>지출 항목 3 (₩0)</li>
+                <li th:each="one : ${top3Expense}">
+                    <span th:text="${one.description}"></span>
+                    <span th:text="'￦' + ${#numbers.formatInteger(one.amount, 1, 'COMMA')}"></span>
+
+<!--                    <span th:text="|&#8361; ${#numbers.formatInteger(one.amount, 1, 'COMMA')}|"></span>-->
+                </li>
+
             </ul>
         </div>
 
         <div>
             <div style="font-size: 14px; color: #555; margin-bottom: 4px;">가장 지출이 큰 카테고리</div>
-            <div style="font-weight: bold;">카테고리명 (₩0)</div>
+            <div style="font-weight: bold;" th:unless="${#arrays.isEmpty(categoryExpenses)}">
+                <span th:text="${categoryExpenses[0].categoryName}"></span>
+
+                <span th:text="'￦' +${ #numbers.formatInteger(categoryExpenses[0].total , 1, 'COMMA')}"></span>
+            </div>
+            <div style="font-weight: bold;" th:if="${#arrays.isEmpty(categoryExpenses)}">
+                <span>지출내역을 기록해보세요.</span>
+            </div>
         </div>
         <div style="margin-top: 20px;">
             <a href="/expense/history" style="font-size: 13px;color: #007bff;text-decoration: none;">

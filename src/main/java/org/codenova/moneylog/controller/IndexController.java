@@ -41,8 +41,15 @@ public class IndexController {
             model.addAttribute("user", user.get());
             model.addAttribute("startDate", startDate);
             model.addAttribute("endDate", endDate);
-            model.addAttribute("totalAmount", expenseRepository.getTotalAmountByUserIdAndPeriod(user.get().getId(),
-                    startDate ,endDate ));
+            model.addAttribute("totalAmount",
+                    expenseRepository.getTotalAmountByUserIdAndPeriod(user.get().getId(),
+                            startDate, endDate));
+            model.addAttribute("top3Expense",
+                    expenseRepository.getTop3ExpenseByUserId(user.get().getId(),
+                            startDate, endDate));
+            model.addAttribute("categoryExpenses",
+                    expenseRepository.getCategoryExpenseByUserId(user.get().getId(),
+                            startDate, endDate) );
 
             return "home";
         } else {

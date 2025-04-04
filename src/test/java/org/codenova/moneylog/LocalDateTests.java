@@ -50,7 +50,22 @@ public class LocalDateTests {
         System.out.println(firstDayOfWeek);
         System.out.println(lastDayOfWeek);
         // 한주의 시작을 일 ~ 토 요일로보고 싶다면..?
+    }
+    @Test
+    public void test02() {
+        LocalDate today = LocalDate.of(2025, 2, 1);
+        System.out.println(today.getDayOfMonth());  // int 날짜
+        // 이상태에서 잘 버무리면 plus, minus 잘 시키면 이번달의 시작일과 이번달의 마지막일을 구할수 있을꺼임
+        today.plusDays(1);  // minusDays()
+        today.plusWeeks(1);   // minusWeeks()
+        today.plusMonths(1);    // minusMonths()
+        today.plusYears(1);     // minusYeears()
+        /*
+            특정날이 있다고 가정하고 그 날이 포함된 달의 시작일과 끝일 구할려면..?
 
+            이게 잘 구해졌다면,  /expense/history    로 사용자가 접근시  모든 지출기록이 다 나오는데
+            이걸 이번달의 데이터만 조회해서 출력되게 변경
+         */
 
     }
 }
