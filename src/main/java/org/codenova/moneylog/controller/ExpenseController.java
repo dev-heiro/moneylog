@@ -26,9 +26,9 @@ public class ExpenseController {
     public String historyHandle(@SessionAttribute("user") User user, Model model) {
         model.addAttribute("categorys", categoryRepository.findAll());
         model.addAttribute("now", LocalDate.now());
-        model.addAttribute("expenses", expenseRepository.findWithCategoryByUserId(user.getId()));
-
-
+         model.addAttribute("expenses", expenseRepository.findWithCategoryByUserId(user.getId()));
+//        model.addAttribute("expenses", expenseRepository.findByUserIdAndDuration(user.getId(), LocalDate.now().minusDays(10), LocalDate.now()));
+        // findByWithCategoryByUserIdAndDuration  이것도 만들어 둘것..!
         return "expense/history";
     }
 

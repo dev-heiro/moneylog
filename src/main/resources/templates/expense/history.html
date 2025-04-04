@@ -22,7 +22,20 @@
         }
     </style>
 </head>
-<body style=" margin: 30px;">
+<body style="margin: 0;  background-color: #f9f9f9;">
+
+<!-- 상단 바 -->
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 20px; background-color: #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    <h2 style="margin: 0;"><a th:href="@{/index}" style="text-decoration: none">머니로그</a></h2>
+    <div style="display: inline-flex; align-items: center; gap: 6px;">
+        <div style="font-weight: bold;">윤형호</div>
+        <div style="font-size: 12px; color: #888;">
+            <span style="display: inline-block; font-size: 11px; color: #888; background-color: #f7f7f7; padding: 2px 6px; border-radius: 6px;">
+                로컬 / 미인증
+            </span>
+        </div>
+    </div>
+</div>
 
 <!--
 <div style="max-width: 1020px; margin: auto">
@@ -47,9 +60,15 @@
     </form>
 -->
 
-
-    <table style="border-collapse: collapse; width: 100%; margin-bottom: 30px;">
-        <thead>
+<div style="max-width: 1020px; margin: 30px auto;">
+    <div style="
+        background-color: #ffffff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    ">
+        <table style="border-collapse: collapse; width: 100%; margin-bottom: 30px; font-size: small">
+            <thead>
             <tr style="background-color: #f2f2f2;">
                 <th style="padding: 8px; border: 1px solid #ccc; width:5%">
                     <input type="checkbox"/>
@@ -60,8 +79,8 @@
                 <th style="padding: 8px; border: 1px solid #ccc; width:20%">카테고리</th>
 
             </tr>
-        </thead>
-        <tbody>
+            </thead>
+            <tbody>
             <tr th:each="one : ${expenses}">
                 <td style="padding: 8px; border: 1px solid #ccc;text-align: center">
                     <input type="checkbox"/></td>
@@ -78,43 +97,45 @@
                     <span th:text="${one.categoryName}"></span>
                 </td>
             </tr>
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 
 
-    <div style="margin-top: 30px;">
-        <form th:action="@{/expense/history}" method="post">
-            <table style="border-collapse: collapse; width: 100%; margin-bottom: 10px;">
-                <tr>
-                    <td style="padding: 8px; border: 1px solid #ccc;text-align: center; width: 5%">
-                        <input type="checkbox" disabled/></td>
-                    <td style="padding: 8px; border: 1px solid #ccc; width: 15%; ">
-                        <input type="date" th:max="${now}"
-                               style="width: 100%;" name="expenseDate"/>
-                    </td>
-                    <td style="padding: 8px; border: 1px solid #ccc;  width: 45%;">
-                        <input type="text" style="width: 100%; " name="description"/>
-                    </td>
-                    <td style="padding: 8px; border: 1px solid #ccc;  width: 15%;">
-                        <input type="number" style="width: 100%;" name="amount"/>
-                    </td>
-                    <td style="padding: 8px; border: 1px solid #ccc;  width: 20%;">
-                        <select style="width: 100%" name="categoryId">
-                            <option disabled selected>카테고리</option>
-                            <option th:each="one : ${categorys}"
-                                    th:value="${one.id}"
-                                    th:text="${one.name}"></option>
-                        </select>
-                    </td>
-                </tr>
-            </table>
-            <div style="text-align: right; ">
-                <button type="submit" style="padding: 4px 30px;  border: none;
+        <div style="margin-top: 30px;">
+            <form th:action="@{/expense/history}" method="post">
+                <table style="border-collapse: collapse; width: 100%; margin-bottom: 10px;">
+                    <tr>
+                        <td style="padding: 8px; border: 1px solid #ccc;text-align: center; width: 5%">
+                            <input type="checkbox" disabled/></td>
+                        <td style="padding: 8px; border: 1px solid #ccc; width: 15%; ">
+                            <input type="date" th:max="${now}"
+                                   style="width: 100%;" name="expenseDate"/>
+                        </td>
+                        <td style="padding: 8px; border: 1px solid #ccc;  width: 45%;">
+                            <input type="text" style="width: 100%; " name="description"/>
+                        </td>
+                        <td style="padding: 8px; border: 1px solid #ccc;  width: 15%;">
+                            <input type="number" style="width: 100%;" name="amount"/>
+                        </td>
+                        <td style="padding: 8px; border: 1px solid #ccc;  width: 20%;">
+                            <select style="width: 100%" name="categoryId">
+                                <option disabled selected>카테고리</option>
+                                <option th:each="one : ${categorys}"
+                                        th:value="${one.id}"
+                                        th:text="${one.name}"></option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+                <div style="text-align: right; ">
+                    <button type="submit" style="padding: 4px 30px;  border: none;
             background-color: slategray; color: white; border-radius: 6px; cursor: pointer;">저장하기
-                </button>
-            </div>
-        </form>
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
+</div>
 </div>
 </body>
 </html>

@@ -20,4 +20,9 @@ public interface ExpenseRepository {
 
     public List<ExpenseWithCategory> findWithCategoryByUserId(@Param("userId") int userId);
 
+
+
+    public int getTotalAmountByUserIdAndPeriod(@Param("userId") int userId,
+                                            @Param("startDate") LocalDate startDate,
+                                            @Param("endDate") LocalDate endDate);
 }

@@ -1,14 +1,74 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>머니로그</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>머니로그 - 당신의 돈을 기록하세요</title>
 </head>
-<body>
-<div>
-    <div style="text-align: right">
-        <span th:text="${user.nickname}"></span> (<small th:text="${user.provider}"></small>)
+<body style="margin: 0; font-family: Arial, sans-serif; background-color: #f9f9f9;">
+
+<!-- 상단 바 -->
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 20px; background-color: #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+    <h2 style="margin: 0;">머니로그</h2>
+    <div style="display: inline-flex; align-items: center; gap: 6px;">
+        <div style="font-weight: bold;"><span th:text="${user.nickname}"></span></div>
+        <div style="font-size: 12px; color: #888;">
+            <span style="display: inline-block;font-size: 11px;color: #888;
+                background-color: #ff8;padding: 2px 6px;border-radius: 6px;"
+                th:text="${user.provider} + ' / 인증'"  th:if="${user.verified =='T'}"
+            ></span>
+            <span style="display: inline-block;font-size: 11px;color: #888;
+                background-color: #f88;padding: 2px 6px;border-radius: 6px;"
+                  th:text="${user.provider} + ' / 미인증'" th:if="${user.verified =='F'}"
+            ></span>
+        </div>
     </div>
 </div>
+
+<!-- 메인 콘텐츠 -->
+<div style="display: flex; padding: 20px; gap: 20px;">
+
+    <!-- 왼쪽: 주간 보고서 -->
+    <div style="flex: 1; background-color: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+        <h3 style="margin-top: 0; margin-bottom: 20px;">
+            이번 주 요약
+            <small th:text="${startDate} + ' ~ ' +${endDate}"
+                style="font-weight: 100; color: #555;"
+            ></small>
+        </h3>
+
+        <div style="margin-bottom: 25px;">
+            <div style="font-size: 14px; color: #555; margin-bottom: 4px;">총 지출</div>
+            <div style="font-size: 24px; font-weight: bold;">
+                <span th:text=" '￦' + ${#numbers.formatInteger(totalAmount, 1, 'COMMA')} "></span>
+            </div>
+        </div>
+
+        <div style="margin-bottom: 25px;">
+            <div style="font-size: 14px; color: #555; margin-bottom: 4px;">Top 3 지출</div>
+            <ul style="padding-left: 20px; margin: 6px 0; line-height: 1.6;">
+                <li>지출 항목 1 (₩0)</li>
+                <li>지출 항목 2 (₩0)</li>
+                <li>지출 항목 3 (₩0)</li>
+            </ul>
+        </div>
+
+        <div>
+            <div style="font-size: 14px; color: #555; margin-bottom: 4px;">가장 지출이 큰 카테고리</div>
+            <div style="font-weight: bold;">카테고리명 (₩0)</div>
+        </div>
+        <div style="margin-top: 20px;">
+            <a href="/expense/history" style="font-size: 13px;color: #007bff;text-decoration: none;">
+                ➤ 전체 지출 보기
+            </a>
+        </div>
+    </div>
+
+    <!-- 오른쪽: 추후 내용용 placeholder -->
+    <div style="flex: 1; background-color: #e9ecef; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #777;">
+        오른쪽 콘텐츠 자리
+    </div>
+</div>
+
 </body>
 </html>

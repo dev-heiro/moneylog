@@ -24,4 +24,10 @@
             where user_id=#{userId} and expense_date between #{startDate} and #{endDate}
         order by expense_date asc, id asc
     </select>
+
+    <select id="getTotalAmountByUserIdAndPeriod" resultType="int">
+        select sum(amount) from expenses
+        where user_id=#{userId} and expense_date between #{startDate} and #{endDate}
+    </select>
+
 </mapper>
