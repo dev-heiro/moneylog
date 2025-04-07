@@ -26,31 +26,33 @@
 
 <!-- 상단 바 -->
 <div style="display: flex; justify-content: space-between; align-items: center; padding: 20px; background-color: #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-    <h2 style="margin: 0;"><a th:href="@{/index}" style="text-decoration: none">머니로그</a></h2>
+    <h2 style="margin: 0;">머니로그</h2>
     <div style="display: inline-flex; align-items: center; gap: 6px;">
-        <div style="font-weight: bold;">윤형호</div>
+        <div style="font-weight: bold;"><span th:text="${session.user.nickname}"></span></div>
         <div style="font-size: 12px; color: #888;">
-            <span style="display: inline-block; font-size: 11px; color: #888; background-color: #f7f7f7; padding: 2px 6px; border-radius: 6px;">
-                로컬 / 미인증
-            </span>
+            <span style="display: inline-block;font-size: 11px;color: #888;
+                background-color: #ff8;padding: 2px 6px;border-radius: 6px;"
+                  th:text="${session.user.provider} + ' / 인증'" th:if="${session.user.verified =='T'}"
+            ></span>
+            <span style="display: inline-block;font-size: 11px;color: #888;
+                background-color: #f88;padding: 2px 6px;border-radius: 6px;"
+                  th:text="${session.user.provider} + ' / 미인증'" th:if="${session.user.verified =='F'}"
+            ></span>
         </div>
     </div>
 </div>
 
-<!--
+
 <div style="max-width: 1020px; margin: auto">
-    <form method="get" action="/expense/history"
+    <form method="get" th:action="@{/expense/history}"
           style="margin-bottom: 30px; display: flex; justify-content: center;
       align-items: center; padding: 20px; gap: 20px;">
-
-
-        <input type="date" name="startDate" value="2025-04-01"
+        <input type="date" name="startDate" th:value="${startDate}"
                style="padding: 10px 12px; font-size: 18px; font-weight: 300; text-align: center; border: 1px solid #ccc; border-radius: 6px;">
 
         <span style="font-size:20px">~</span>
-        <input type="date" name="endDate" value="2025-04-30"
+        <input type="date" name="endDate" th:value="${endDate}"
                style="padding: 10px 12px; font-size: 18px; font-weight: 300; text-align: center; border: 1px solid #ccc; border-radius: 6px;">
-
 
         <button type="submit"
                 style="padding: 10px 30px; font-size: 18px;  border: none;
@@ -58,7 +60,7 @@
             검색
         </button>
     </form>
--->
+
 
 <div style="max-width: 1020px; margin: 30px auto;">
     <div style="

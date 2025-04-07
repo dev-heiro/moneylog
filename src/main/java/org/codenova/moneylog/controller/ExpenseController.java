@@ -8,6 +8,7 @@ import org.codenova.moneylog.entity.User;
 import org.codenova.moneylog.repository.CategoryRepository;
 import org.codenova.moneylog.repository.ExpenseRepository;
 import org.codenova.moneylog.request.AddExpenseRequest;
+import org.codenova.moneylog.request.SearchPeriodRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,11 +24,30 @@ public class ExpenseController {
     private ExpenseRepository expenseRepository;
 
     @GetMapping("/history")
-    public String historyHandle(@SessionAttribute("user") User user, Model model) {
+    public String historyHandle(@SessionAttribute("user") User user,
+                                @ModelAttribute SearchPeriodRequest searchPeriodRequest,
+                                Model model) {
+        LocalDate startDate;
+        LocalDate endDate;
+        if(searchPeriodRequest.getStartDate() != null && searchPeriodRequest.getEndDate() != null) {
+            startDate = searchPeriodRequest.getStartDate();
+            endDate = searchPeriodRequest.getEndDate();
+        } else {
+            LocalDate today = LocalDate.now();
+            startDate = today.minusDays(today.getDayOfMonth()-1);
+            endDate= startDate.plusMonths(1).minusDays(1);
+        }
+
+        model.addAttribute("startDate", startDate);
+        model.addAttribute("endDate", endDate);
+
         model.addAttribute("categorys", categoryRepository.findAll());
         model.addAttribute("now", LocalDate.now());
-         model.addAttribute("expenses", expenseRepository.findWithCategoryByUserId(user.getId()));
-//        model.addAttribute("expenses", expenseRepository.findByUserIdAndDuration(user.getId(), LocalDate.now().minusDays(10), LocalDate.now()));
+//         model.addAttribute("expenses", expenseRepository.findWithCategoryByUserId(user.getId()));
+
+        model.addAttribute("expenses",
+                expenseRepository.findByUserIdAndDuration(user.getId(), startDate, endDate)
+        );
         // findByWithCategoryByUserIdAndDuration  이것도 만들어 둘것..!
         return "expense/history";
     }
@@ -37,9 +57,6 @@ public class ExpenseController {
                                     BindingResult bindingResult,
                                     @SessionAttribute("user") User user,
                                     Model model) {
-        if (user.getVerified().equals("F")) {
-
-        }
 
         if (bindingResult.hasErrors()) {
             return "expense/history-error";

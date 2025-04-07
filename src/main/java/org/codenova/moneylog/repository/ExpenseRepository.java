@@ -15,7 +15,7 @@ public interface ExpenseRepository {
 
     public List<Expense> findByUserId(@Param("userId") int userId);
 
-    public List<Expense> findByUserIdAndDuration(@Param("userId") int userId,
+    public List<ExpenseWithCategory> findByUserIdAndDuration(@Param("userId") int userId,
                                                  @Param("startDate") LocalDate startDate,
                                                  @Param("endDate") LocalDate endDate);
 

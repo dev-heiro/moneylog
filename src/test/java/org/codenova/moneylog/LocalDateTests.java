@@ -47,7 +47,7 @@ public class LocalDateTests {
         LocalDate d = LocalDate.of(2025, 1, 24);
         LocalDate firstDayOfWeek = d.minusDays(d.getDayOfWeek().getValue() - 1);
         LocalDate lastDayOfWeek = d.plusDays(7 - d.getDayOfWeek().getValue());
-        System.out.println(firstDayOfWeek);
+        System.out.println(firstDayOfWeek);;
         System.out.println(lastDayOfWeek);
         // 한주의 시작을 일 ~ 토 요일로보고 싶다면..?
     }
@@ -66,6 +66,15 @@ public class LocalDateTests {
             이게 잘 구해졌다면,  /expense/history    로 사용자가 접근시  모든 지출기록이 다 나오는데
             이걸 이번달의 데이터만 조회해서 출력되게 변경
          */
+    }
+    @Test
+    public void test03() {
+        LocalDate day = LocalDate.of(2000, 10, 1);
+       // 시작일과 끝일 구하기
+        LocalDate startDay = day.minusDays(day.getDayOfMonth()-1);
+        LocalDate endDay = startDay.plusMonths(1).minusDays(1);
 
+        System.out.println(startDay);
+        System.out.println(endDay);
     }
 }
