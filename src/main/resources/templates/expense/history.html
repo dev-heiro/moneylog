@@ -48,6 +48,7 @@
           style="margin-bottom: 30px; display: flex; justify-content: center;
       align-items: center; padding: 20px; gap: 20px;">
         <input type="date" name="startDate" th:value="${startDate}"
+               onchange="event.target.nextElementSibling.nextElementSibling.value = '2025-01-10';"
                style="padding: 10px 12px; font-size: 18px; font-weight: 300; text-align: center; border: 1px solid #ccc; border-radius: 6px;">
 
         <span style="font-size:20px">~</span>
