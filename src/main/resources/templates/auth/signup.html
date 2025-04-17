@@ -28,7 +28,9 @@
                 <div>
                     <input type="text" name="email"
                            style="padding: 8px; width: 100%; border:1px solid rgba(0,0,0,0.3) ; border-radius: 4px;"
-                           placeholder="이메일주소"/>
+                           placeholder="이메일주소" id="email-input"/>
+                    <div style="font-size: smaller">
+                    </div>
                 </div>
             </div>
             <div style="margin-bottom: 10px">
@@ -73,10 +75,39 @@
                 <img th:src="@{/icons/naver_login.png}"/>
             </a>
         </div>
-        <hr cstyle="color: rgba(0, 0, 0, 0.1)"/>
+        <hr style="color: rgba(0, 0, 0, 0.1) ;" />
         <a th:href="@{/auth/login}" style="font-size: small">이미 계정이 있으신가요?</a>
     </div>
 </div>
+
+
+<script>
+    document.getElementById("email-input").onchange=function(evt) {
+        const email = evt.target.value;   // document.getElementById("email-input").value,   this.value
+        if(email) {
+            fetch("/api/auth/available?email=" + email, {
+                method : "get"
+            }).then(function(response) {
+                return response.text();
+            }).then(function(text) {
+                if(text === 'not-email') {
+                    evt.target.nextElementSibling.style.color='hotpink';
+                    evt.target.nextElementSibling.innerHTML = "이메일 형식으로 입력바랍니다.";
+                }else if(text ==='available') {
+                    evt.target.nextElementSibling.style.color='lightgreen';
+                    evt.target.nextElementSibling.innerHTML = "사용가능합니다.";
+                }else {
+                    evt.target.nextElementSibling.style.color='hotpink';
+                    evt.target.nextElementSibling.innerHTML = "이미 가입된 이메일 주소입니다.";
+                }
+            });
+        }
+    };
+
+
+
+
+</script>
 </body>
 </html>
 

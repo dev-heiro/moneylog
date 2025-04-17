@@ -5,22 +5,87 @@
     <title>머니로구</title>
 </head>
 <body>
-  <h2>일별 지출 추이</h2>
-  <ul>
+<h2>일별 지출 추이</h2>
+<ul>
     <li th:each="one : ${dailyExpense}">
-      <span th:text="${one.expenseDate}"></span>
-      :
-      <small th:text="${one.total}"></small>
+        <span th:text="${one.expenseDate}"></span>
+        :
+        <small th:text="${one.total}"></small>
     </li>
-  </ul>
-  <hr/>
-  <h2>카테고리별 지출 통계</h2>
-  <ul>
+</ul>
+<div>
+    <canvas id="dailyChart" style="width: 800px; margin: auto"></canvas>
+</div>
+<hr/>
+<h2>카테고리별 지출 통계</h2>
+<ul>
     <li th:each="one : ${categoryExpense}">
-      <span th:text="${one.categoryName}"></span>
-      :
-      <small th:text="${one.total}"></small>
+        <span th:text="${one.categoryName}"></span>
+        :
+        <small th:text="${one.total}"></small>
     </li>
-  </ul>
+</ul>
+<div>
+    <canvas id="categoryChart" style="width: 800px; margin: auto"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function (evt) {
+        fetch("/api/expense/dataset/category", {
+            method: "get"
+        }).then(function (response) {
+            return response.text();
+        }).then(function (text) {
+            console.log(text);
+            const obj = JSON.parse(text);
+            new Chart(document.getElementById('categoryChart'), {
+                type: 'bar',
+                data: {
+                    labels: obj.labels,
+                    datasets: [{
+                        label: '# 카테고리별 지출합계',
+                        data: obj.data,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+
+
+        fetch("/api/expense/dataset/daily", {
+            method : "get"
+        }).then(function(result) {
+            return result.text();
+        }).then(function(text) {
+            const obj = JSON.parse(text);
+            new Chart(document.getElementById('dailyChart'), {
+                type: 'line',
+                data: {
+                    labels: obj.labels,
+                    datasets: [{
+                        label: '# 일별 지출 추이',
+                        data: obj.data,
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    });
+</script>
 </body>
 </html>

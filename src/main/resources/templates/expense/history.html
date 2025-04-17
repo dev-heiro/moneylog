@@ -47,12 +47,11 @@
     <form method="get" th:action="@{/expense/history}"
           style="margin-bottom: 30px; display: flex; justify-content: center;
       align-items: center; padding: 20px; gap: 20px;">
-        <input type="date" name="startDate" th:value="${startDate}"
-               onchange="event.target.nextElementSibling.nextElementSibling.value = '2025-01-10';"
+        <input type="date" name="startDate" th:value="${startDate}" id="startDate"
                style="padding: 10px 12px; font-size: 18px; font-weight: 300; text-align: center; border: 1px solid #ccc; border-radius: 6px;">
 
         <span style="font-size:20px">~</span>
-        <input type="date" name="endDate" th:value="${endDate}"
+        <input type="date" name="endDate" th:value="${endDate}" id="endDate"
                style="padding: 10px 12px; font-size: 18px; font-weight: 300; text-align: center; border: 1px solid #ccc; border-radius: 6px;">
 
         <button type="submit"
@@ -101,11 +100,19 @@
                 </td>
             </tr>
             </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2" style="padding: 8px; border: 1px solid #ccc;"></td>
+                    <td style="padding: 8px; border: 1px solid #ccc;">부분합계</td>
+                    <td style="padding: 8px; border: 1px solid #ccc;">0 </td>
+                    <td style="padding: 8px; border: 1px solid #ccc;"></td>
+                </tr>
+            </tfoot>
         </table>
 
 
         <div style="margin-top: 30px;">
-            <form th:action="@{/expense/history}" method="post">
+            <form th:action="@{/expense/history}" method="post" autocomplete="off">
                 <table style="border-collapse: collapse; width: 100%; margin-bottom: 10px;">
                     <tr>
                         <td style="padding: 8px; border: 1px solid #ccc;text-align: center; width: 5%">
@@ -115,7 +122,9 @@
                                    style="width: 100%;" name="expenseDate"/>
                         </td>
                         <td style="padding: 8px; border: 1px solid #ccc;  width: 45%;">
-                            <input type="text" style="width: 100%; " name="description"/>
+                            <input type="text" style="width: 100%; " name="description" list="x" id="description"/>
+                            <datalist id="x">
+                            </datalist>
                         </td>
                         <td style="padding: 8px; border: 1px solid #ccc;  width: 15%;">
                             <input type="number" style="width: 100%;" name="amount"/>
@@ -140,5 +149,41 @@
     </div>
 </div>
 </div>
+<script>
+
+    document.getElementById("description").onkeyup=function(evt) {
+        if(!evt.target.value) {
+            return;
+        }
+        fetch("/api/expense/auto-complete?word="+evt.target.value, {
+            method : "get"
+        }).then(function(response) {
+            return response.text();
+        }).then(function(text) {
+            const obj = JSON.parse(text);
+            // string[] 을 json으로 보낸거니까 복원하면 string[] 이 나옴
+
+            let optionsHTML ="";
+            for(let one of obj) {
+                optionsHTML += "<option>"+one+"</option>";
+            }
+            document.getElementById("x").innerHTML = optionsHTML;
+        });
+    }
+
+
+
+    document.getElementById("startDate").onchange=function(evt) {
+        fetch("/api/expense/next-month?date="+evt.target.value, {
+            method : "get"
+        }).then(function(response) {
+            return response.text();
+        }).then(function(text) {
+            document.getElementById("endDate").value= text;
+        });
+    };
+
+</script>
+
 </body>
 </html>

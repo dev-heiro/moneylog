@@ -44,4 +44,5 @@ public interface ExpenseRepository {
                                                                @Param("startDate") LocalDate startDate,
                                                                @Param("endDate") LocalDate endDate);
 
+    public List<String > getDistinctDescription(@Param("word") String word);
 }
